@@ -1,36 +1,59 @@
-import React, { useState } from "react";
-import { useOutletContext } from "react-router";
-import { UploadIcon, CheckCircle2, ImageIcon } from "lucide-react";
-import { PROGRESS_INCREMENT, PROGRESS_INTERVAL_MS, REDIRECT_DELAY_MS } from "../lib/constants";
+import React, {useCallback, useEffect, useRef, useState} from 'react'
+import {useOutletContext} from "react-router";
+import {CheckCircle2, ImageIcon, UploadIcon} from "lucide-react";
+import {PROGRESS_INCREMENT, REDIRECT_DELAY_MS, PROGRESS_INTERVAL_MS} from "../lib/constants";
 
 interface UploadProps {
-    onComplete?: (base64: string) => void;
+    onComplete?: (base64Data: string) => void;
 }
 
 const Upload = ({ onComplete }: UploadProps) => {
     const [file, setFile] = useState<File | null>(null);
     const [isDragging, setIsDragging] = useState(false);
     const [progress, setProgress] = useState(0);
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const { isSignedIn } = useOutletContext<AuthContext>();
 
-    const processFile = (file: File) => {
+    useEffect(() => {
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            }
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+                timeoutRef.current = null;
+            }
+        };
+    }, []);
+
+    const processFile = useCallback((file: File) => {
         if (!isSignedIn) return;
 
         setFile(file);
         setProgress(0);
 
         const reader = new FileReader();
-        reader.onload = () => {
-            const base64 = reader.result as string;
+        reader.onerror = () => {
+            setFile(null);
+            setProgress(0);
+        };
+        reader.onloadend = () => {
+            const base64Data = reader.result as string;
 
-            const interval = setInterval(() => {
+            intervalRef.current = setInterval(() => {
                 setProgress((prev) => {
                     const next = prev + PROGRESS_INCREMENT;
                     if (next >= 100) {
-                        clearInterval(interval);
-                        setTimeout(() => {
-                            onComplete?.(base64);
+                        if (intervalRef.current) {
+                            clearInterval(intervalRef.current);
+                            intervalRef.current = null;
+                        }
+                        timeoutRef.current = setTimeout(() => {
+                            onComplete?.(base64Data);
+                            timeoutRef.current = null;
                         }, REDIRECT_DELAY_MS);
                         return 100;
                     }
@@ -39,37 +62,34 @@ const Upload = ({ onComplete }: UploadProps) => {
             }, PROGRESS_INTERVAL_MS);
         };
         reader.readAsDataURL(file);
-    };
+    }, [isSignedIn, onComplete]);
 
-    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    const handleDragOver = (e: React.DragEvent) => {
         e.preventDefault();
         if (!isSignedIn) return;
         setIsDragging(true);
     };
 
-    const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        if (!isSignedIn) return;
-        setIsDragging(true);
-    };
-
-    const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
+    const handleDragLeave = () => {
         setIsDragging(false);
     };
 
-    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    const handleDrop = (e: React.DragEvent) => {
         e.preventDefault();
         setIsDragging(false);
+
         if (!isSignedIn) return;
-        const droppedFile = e.dataTransfer.files?.[0];
-        if (droppedFile) {
+
+        const droppedFile = e.dataTransfer.files[0];
+        const allowedTypes = ['image/jpeg', 'image/png'];
+        if (droppedFile && allowedTypes.includes(droppedFile.type)) {
             processFile(droppedFile);
         }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!isSignedIn) return;
+
         const selectedFile = e.target.files?.[0];
         if (selectedFile) {
             processFile(selectedFile);
@@ -82,14 +102,13 @@ const Upload = ({ onComplete }: UploadProps) => {
                 <div
                     className={`dropzone ${isDragging ? 'is-dragging' : ''}`}
                     onDragOver={handleDragOver}
-                    onDragEnter={handleDragEnter}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
                 >
                     <input
                         type="file"
                         className="drop-input"
-                        accept=".jpg,.png,.jpeg"
+                        accept=".jpg,.jpeg,.png"
                         disabled={!isSignedIn}
                         onChange={handleChange}
                     />
@@ -100,10 +119,8 @@ const Upload = ({ onComplete }: UploadProps) => {
                         </div>
                         <p>
                             {isSignedIn ? (
-                                'Click to upload or just drag and drop '
-                            ) : (
-                                "Sign in or sign up with puter to upload"
-                            )}
+                                "Click to upload or just drag and drop"
+                            ): ("Sign in or sign up with Puter to upload")}
                         </p>
                         <p className="help">Maximum file size 50 MB.</p>
                     </div>
@@ -114,10 +131,11 @@ const Upload = ({ onComplete }: UploadProps) => {
                         <div className="status-icon">
                             {progress === 100 ? (
                                 <CheckCircle2 className="check" />
-                            ) : (
+                            ): (
                                 <ImageIcon className="image" />
                             )}
                         </div>
+
                         <h3>{file.name}</h3>
 
                         <div className='progress'>
@@ -131,7 +149,6 @@ const Upload = ({ onComplete }: UploadProps) => {
                 </div>
             )}
         </div>
-    );
-};
-
-export default Upload;
+    )
+}
+export default Upload
