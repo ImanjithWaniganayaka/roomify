@@ -18,6 +18,24 @@ const VisualizerId = () => {
 
     const [isProcessing, setIsProcessing] = useState(false);
     const [currentImage, setCurrentImage] = useState<string | null>(null);
+    const [aspectRatio, setAspectRatio] = useState<number | null>(null);
+
+    useEffect(() => {
+        if (!project?.sourceImage) return;
+
+        let isMounted = true;
+        const img = new Image();
+        img.onload = () => {
+            if (isMounted && img.naturalWidth && img.naturalHeight) {
+                setAspectRatio(img.naturalWidth / img.naturalHeight);
+            }
+        };
+        img.src = project.sourceImage;
+
+        return () => {
+            isMounted = false;
+        };
+    }, [project?.sourceImage]);
 
     const handleBack = () => navigate('/');
     const handleExport = () => {
@@ -183,20 +201,44 @@ const VisualizerId = () => {
 
                     <div className="compare-stage">
                         {project?.sourceImage && currentImage ? (
-                            <ReactCompareSlider
-                                defaultValue={50}
-                                style={{ width: '100%', height: 'auto' }}
-                                itemOne={
-                                    <ReactCompareSliderImage src={project?.sourceImage} alt="before" className="compare-img" />
-                                }
-                                itemTwo={
-                                    <ReactCompareSliderImage src={currentImage || project?.renderedImage || ''} alt="after" className="compare-img" />
-                                }
-                            />
+                            <div
+                                className="compare-slider-container w-full flex items-center justify-center"
+                                style={{
+                                    maxWidth: '100%',
+                                    maxHeight: 'min(70vh, 650px)',
+                                    aspectRatio: aspectRatio ? `${aspectRatio}` : undefined,
+                                }}
+                            >
+                                <ReactCompareSlider
+                                    defaultPosition={50}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        aspectRatio: aspectRatio ? `${aspectRatio}` : undefined,
+                                        maxHeight: 'min(70vh, 650px)',
+                                    }}
+                                    itemOne={
+                                        <ReactCompareSliderImage
+                                            src={project?.sourceImage}
+                                            alt="before"
+                                            className="compare-img"
+                                            style={{ width: '100%', height: '100%', objectFit: 'fill' }}
+                                        />
+                                    }
+                                    itemTwo={
+                                        <ReactCompareSliderImage
+                                            src={currentImage || project?.renderedImage || ''}
+                                            alt="after"
+                                            className="compare-img"
+                                            style={{ width: '100%', height: '100%', objectFit: 'fill' }}
+                                        />
+                                    }
+                                />
+                            </div>
                         ) : (
                             <div className="compare-fallback">
                                 {project?.sourceImage && (
-                                    <img src={project.sourceImage} alt="Before" className="compare-img" />
+                                    <img src={project.sourceImage} alt="Before" className="render-fallback" />
                                 )}
                             </div>
                         )}
