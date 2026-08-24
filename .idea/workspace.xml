@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4eeb8417-dce2-4733-9e26-3f3ceaa67fc8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/ai.action.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/puter.worker.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/visualizer.$id.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/visualizer.$id.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +24,65 @@
     <commands />
     <urls />
   </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0251400635909182" />
+      <entry key="MS500" value="2.440028730882748" />
+      <entry key="S2" value="5.079389412663361" />
+      <entry key="S5" value="6.129279047698368" />
+      <entry key="S10" value="6.545284850845336" />
+      <entry key="S30" value="6.843890367924897" />
+      <entry key="S60" value="6.921523045203488" />
+      <entry key="M2" value="6.973208550160074" />
+      <entry key="M5" value="7.158426645256131" />
+      <entry key="M10" value="7.409513867107197" />
+      <entry key="M15" value="7.553263320333181" />
+      <entry key="M30" value="7.744716757056109" />
+      <entry key="H1" value="7.863177833529931" />
+      <entry key="H2" value="7.929123725802643" />
+      <entry key="H4" value="7.9639229297138785" />
+      <entry key="D1" value="7.993896425218539" />
+      <entry key="W1" value="7.99912581238701" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="1.9230212730121917E-113" />
+      <entry key="S5" value="8.195843094002138E-46" />
+      <entry key="S10" value="2.8628382933728776E-23" />
+      <entry key="S30" value="3.059137087543928E-8" />
+      <entry key="S60" value="1.7490389039538046E-4" />
+      <entry key="M2" value="0.013225123454825686" />
+      <entry key="M5" value="0.17723924604421298" />
+      <entry key="M10" value="0.4209979169119641" />
+      <entry key="M15" value="0.561720100195376" />
+      <entry key="M30" value="0.7494798864515153" />
+      <entry key="H1" value="0.8657250640079188" />
+      <entry key="H2" value="0.930443477062373" />
+      <entry key="H4" value="0.9645949808403383" />
+      <entry key="D1" value="0.9940101817985831" />
+      <entry key="W1" value="0.9991421068980455" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.11930818805481666" />
+      <entry key="MS500" value="2.034460205091163" />
+      <entry key="S2" value="4.944214929365371" />
+      <entry key="S5" value="6.070869261455155" />
+      <entry key="S10" value="6.515254966584662" />
+      <entry key="S30" value="6.833686205981615" />
+      <entry key="S60" value="6.916558580082147" />
+      <entry key="M2" value="6.983390352899575" />
+      <entry key="M5" value="7.332067284415919" />
+      <entry key="M10" value="7.826933107975877" />
+      <entry key="M15" value="8.111911168145738" />
+      <entry key="M30" value="8.492201939962992" />
+      <entry key="H1" value="8.727763449502318" />
+      <entry key="H2" value="8.858957903700254" />
+      <entry key="H4" value="8.92820281656538" />
+      <entry key="D1" value="8.987852591799939" />
+      <entry key="W1" value="8.998260165448174" />
+    </decayedShown>
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1,
   &quot;fromUser&quot;: false
@@ -37,32 +95,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "hosting-images",
-    "javascript.preferred.runtime.type.id": "node",
-    "junie.onboarding.icon.badge.shown": "true",
-    "junie.plugin.stays.banner.dismissed": "true",
-    "last_opened_file_path": "D:/projects/roomify",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "editing.templates",
-    "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "D:\\projects\\roomify\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;hosting-images&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;junie.plugin.stays.banner.dismissed&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/projects/roomify&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editing.templates&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\projects\\roomify\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -75,7 +134,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-WS-261.23567.141" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-WS-261.27258.45" />
       </set>
     </attachedChunks>
   </component>
@@ -92,7 +151,10 @@
       <workItem from="1787344622744" duration="1050000" />
       <workItem from="1787367227074" duration="3279000" />
       <workItem from="1787491135224" duration="1478000" />
-      <workItem from="1787496012842" duration="1478000" />
+      <workItem from="1787496012842" duration="1708000" />
+      <workItem from="1787547662519" duration="653000" />
+      <workItem from="1787548740377" duration="63000" />
+      <workItem from="1787564588570" duration="1128000" />
     </task>
     <servers />
   </component>
