@@ -4,11 +4,11 @@ import {generate3DView} from "../../lib/ai.action";
 import {Box, Download, RefreshCcw, Share2, X} from "lucide-react";
 import Button from "../../components/ui/Button";
 import {createProject, getProjectById} from "../../lib/puter.action";
+import {ReactCompareSlider, ReactCompareSliderImage} from "react-compare-slider";
 
 const VisualizerId = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-
     const { userId } = useOutletContext<AuthContext>()
 
     const hasInitialGenerated = useRef(false);
@@ -17,18 +17,28 @@ const VisualizerId = () => {
     const [isProjectLoading, setIsProjectLoading] = useState(true);
 
     const [isProcessing, setIsProcessing] = useState(false);
-    const [currentImage, setCurrentImage] = useState<string | null>( null);
+    const [currentImage, setCurrentImage] = useState<string | null>(null);
 
     const handleBack = () => navigate('/');
+    const handleExport = () => {
+        if (!currentImage) return;
 
-    const runGeneration = async (item: DesignItem ) => {
+        const link = document.createElement('a');
+        link.href = currentImage;
+        link.download = `roomify-${id || 'design'}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    const runGeneration = async (item: DesignItem) => {
         if(!id || !item.sourceImage) return;
 
-        try{
+        try {
             setIsProcessing(true);
-            const result = await generate3DView({sourceImage: item.sourceImage});
+            const result = await generate3DView({ sourceImage: item.sourceImage });
 
-            if(result.renderedImage){
+            if(result.renderedImage) {
                 setCurrentImage(result.renderedImage);
 
                 const updatedItem = {
@@ -47,9 +57,9 @@ const VisualizerId = () => {
                     setCurrentImage(saved.renderedImage || result.renderedImage);
                 }
             }
-        }catch (error){
-            console.error("Generation failed", error);
-        }finally {
+        } catch (error) {
+            console.error('Generation failed: ', error)
+        } finally {
             setIsProcessing(false);
         }
     }
@@ -100,7 +110,6 @@ const VisualizerId = () => {
         void runGeneration(project);
     }, [project, isProjectLoading]);
 
-
     return (
         <div className="visualizer">
             <nav className="topbar">
@@ -119,14 +128,14 @@ const VisualizerId = () => {
                     <div className="panel-header">
                         <div className="panel-meta">
                             <p>Project</p>
-                            <h2>{project ?.name || `Residence ${id}`}</h2>
+                            <h2>{project?.name || `Residence ${id}`}</h2>
                             <p className="note">Created by You</p>
                         </div>
 
                         <div className="panel-actions">
                             <Button
                                 size="sm"
-                                onClick={() => {}}
+                                onClick={handleExport}
                                 className="export"
                                 disabled={!currentImage}
                             >
@@ -144,8 +153,8 @@ const VisualizerId = () => {
                             <img src={currentImage} alt="AI Render" className="render-img" />
                         ) : (
                             <div className="render-placeholder">
-                                {project ?.sourceImage && (
-                                    <img src={project ?.sourceImage} alt="Original" className="render-fallback" />
+                                {project?.sourceImage && (
+                                    <img src={project?.sourceImage} alt="Original" className="render-fallback" />
                                 )}
                             </div>
                         )}
@@ -163,7 +172,36 @@ const VisualizerId = () => {
 
                 </div>
 
+                <div className="panel compare">
+                    <div className="panel-header">
+                        <div className="panel-meta">
+                            <p>Comparison</p>
+                            <h3>Before and After</h3>
+                        </div>
+                        <div className="hint">Drag to compare</div>
+                    </div>
 
+                    <div className="compare-stage">
+                        {project?.sourceImage && currentImage ? (
+                            <ReactCompareSlider
+                                defaultValue={50}
+                                style={{ width: '100%', height: 'auto' }}
+                                itemOne={
+                                    <ReactCompareSliderImage src={project?.sourceImage} alt="before" className="compare-img" />
+                                }
+                                itemTwo={
+                                    <ReactCompareSliderImage src={currentImage || project?.renderedImage || ''} alt="after" className="compare-img" />
+                                }
+                            />
+                        ) : (
+                            <div className="compare-fallback">
+                                {project?.sourceImage && (
+                                    <img src={project.sourceImage} alt="Before" className="compare-img" />
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </div>
             </section>
         </div>
     )
