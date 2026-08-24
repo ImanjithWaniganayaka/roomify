@@ -17,7 +17,7 @@ export const getCurrentUser = async () => {
 
 export const createProject = async ({ item, visibility = "private" }: CreateProjectParams): Promise<DesignItem | null | undefined> => {
     if(!PUTER_WORKER_URL) {
-        console.warn('Missing VITE_PUTER_WORKER_URL; skip history fetch;');
+        console.warn('Missing VITE_PUTER_WORKER_URL; skipping project creation.');
         return null;
     }
 
@@ -62,9 +62,14 @@ export const createProject = async ({ item, visibility = "private" }: CreateProj
 
     try {
         const response = await puter.workers.exec(`${PUTER_WORKER_URL}/api/projects/save`, {
-            method: 'POST', headers: { 'Content-Type': 'application/json', body: JSON.stringify({
-                    project: payload , visibility,
-            }) },
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                project: payload,
+                visibility,
+            }),
         });
         if(!response.ok) {
             console.error('failed to save the project', await response.text());
